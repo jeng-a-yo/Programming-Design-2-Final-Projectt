@@ -1,7 +1,5 @@
-package Programming-Design-2-Final-Project;
+package Programming_Design_2_Final_Project;
 
 public class database {
-    public static void main(String[] args) {
-        System.out.println("123");
-    }
+
 }
