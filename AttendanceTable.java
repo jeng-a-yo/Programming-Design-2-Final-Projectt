@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-class AttendanceTable implements Serializable {
+public class AttendanceTable implements Serializable {
     private Map<String, Integer> attendanceMap = new HashMap<>();
     private Map<String, String> signInTimeMap = new HashMap<>();
 
