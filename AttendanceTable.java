@@ -10,8 +10,13 @@ public class AttendanceTable implements Serializable {
 
     public void addUser(String userID, int attendance) {
         attendanceMap.put(userID, attendance);
-        String signInTime = getCurrentTime();
-        signInTimeMap.put(userID, signInTime);
+        if (attendance == 0){
+            signInTimeMap.put(userID, null);
+        }else{
+            String signInTime = getCurrentTime();
+            signInTimeMap.put(userID, signInTime);
+        }
+        
     }
 
     private String getCurrentTime() {
