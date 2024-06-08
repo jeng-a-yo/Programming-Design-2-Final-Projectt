@@ -35,25 +35,32 @@ public class AttendanceTable implements Serializable {
         return signInTimeMap.get(userID);
     }
 
-    public void serializeAttendanceTable() {
+    public void serializeAttendanceTable(String directory) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(new Date());
         String filename = date + ".ser";
+        
+        // Ensure the directory exists
+        File dir = new File(directory);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(dir, filename)))) {
             oos.writeObject(this);
-            System.out.println("AttendanceTable has been serialized to " + filename);
+            System.out.println("AttendanceTable has been serialized to " + filename + " in directory " + directory);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static AttendanceTable deserializeAttendanceTable(String filename) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+    public static AttendanceTable deserializeAttendanceTable(String directory, String filename) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(directory, filename)))) {
             return (AttendanceTable) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
         }
     }
+
 }
