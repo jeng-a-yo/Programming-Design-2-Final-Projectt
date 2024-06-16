@@ -15,7 +15,7 @@ import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 
 class FetchEmail {
-    private HashMap<String, Integer> attendanceRecord = new HashMap<>();
+    // private HashMap<String, Integer> attendanceRecord = new HashMap<>();
     private String passwordStd;
     private String pop3Host = "pop.gmail.com";
     // private String storeType = "pop3";
@@ -24,10 +24,11 @@ class FetchEmail {
     private ArrayList<String> tokens = new ArrayList<>();
     private AttendanceTable at = new AttendanceTable();
 
-    public FetchEmail(ArrayList<String> tokens, HashMap<String, Integer> attendanceRecord) {
+    // public FetchEmail(ArrayList<String> tokens, HashMap<String, Integer>
+    // attendanceRecord){
+    public FetchEmail(ArrayList<String> tokens) {
         this.tokens = tokens;
-        this.attendanceRecord = attendanceRecord;
-
+        // this.attendanceRecord = attendanceRecord;
     }
 
     public void firstCall() {
@@ -59,9 +60,12 @@ class FetchEmail {
             }
 
             System.out.println("============================");
-            for (String s : attendanceRecord.keySet()) {
-                System.out.println("StudentID: " + s + ",Status: " + attendanceRecord.get(s));
-            }
+
+            // print out attendance table
+            // for (String s : attendanceRecord.keySet()) {
+            // System.out.println("StudentID: " + s + ",Status: " +
+            // attendanceRecord.get(s));
+            // }
 
             emailFolder.close(false);
             store.close();
@@ -103,9 +107,12 @@ class FetchEmail {
             }
 
             System.out.println("============================");
-            for (String s : attendanceRecord.keySet()) {
-                System.out.println("StudentID: " + s + ",Status: " + attendanceRecord.get(s));
-            }
+
+            // print out attendance table
+            // for (String s : attendanceRecord.keySet()) {
+            // System.out.println("StudentID: " + s + ",Status: " +
+            // attendanceRecord.get(s));
+            // }
 
             emailFolder.close(false);
             store.close();
@@ -223,4 +230,5 @@ class FetchEmail {
         return studentID;
     }
 
+}
 }
