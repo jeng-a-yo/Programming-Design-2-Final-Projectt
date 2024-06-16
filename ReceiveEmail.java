@@ -14,13 +14,6 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 
-public class ReceiveEmail {
-    // public static void main(String[] args) {
-
-    // FetchEmail rc = new FetchEmail();
-    // }
-}
-
 class FetchEmail {
     private HashMap<String, Integer> attendanceRecord = new HashMap<>();
     private String passwordStd;
@@ -29,10 +22,12 @@ class FetchEmail {
     private String user = "albert920507@gmail.com";
     private String password = "rdbdkmtwafxakdpn";
     private ArrayList<String> tokens = new ArrayList<>();
+    private AttendanceTable at = new AttendanceTable();
 
     public FetchEmail(ArrayList<String> tokens, HashMap<String, Integer> attendanceRecord) {
         this.tokens = tokens;
         this.attendanceRecord = attendanceRecord;
+
     }
 
     public void firstCall() {
@@ -65,8 +60,7 @@ class FetchEmail {
 
             System.out.println("============================");
             for (String s : attendanceRecord.keySet()) {
-                System.out.println("StudentID: " + s + ",Status: " +
-                        attendanceRecord.get(s));
+                System.out.println("StudentID: " + s + ",Status: " + attendanceRecord.get(s));
             }
 
             emailFolder.close(false);
@@ -110,8 +104,7 @@ class FetchEmail {
 
             System.out.println("============================");
             for (String s : attendanceRecord.keySet()) {
-                System.out.println("StudentID: " + s + ",Status: " +
-                        attendanceRecord.get(s));
+                System.out.println("StudentID: " + s + ",Status: " + attendanceRecord.get(s));
             }
 
             emailFolder.close(false);
@@ -140,25 +133,17 @@ class FetchEmail {
 
             if (tokens.contains(passwordStd.trim())) {
                 System.out.println("PASSWORD MATCH");
-                attendanceRecord.remove(studentID);
-                attendanceRecord.put(studentID, 1);
+                // attendanceRecord.remove(studentID);
+                // attendanceRecord.put(studentID, 1);
+                at.addUser(studentID, 1);
                 tokens.remove(passwordStd.trim());
 
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
-                attendanceRecord.remove(studentID);
-                attendanceRecord.put(studentID, -1);
+                // attendanceRecord.remove(studentID);
+                // attendanceRecord.put(studentID, -1);
+                at.addUser(studentID, -1);
             }
-
-            // if (passwordStd.trim().equals(passwordProf)) {
-            // System.out.println("PASSWORD MATCH!!");
-            // attendanceRecord.remove(studentID);
-            // attendanceRecord.put(studentID, 1);
-            // } else {
-            // System.out.println("PASSWORD DIDN'T MATCH!!");
-            // attendanceRecord.remove(studentID);
-            // attendanceRecord.put(studentID, -1);
-            // }
         }
 
     }
@@ -178,25 +163,16 @@ class FetchEmail {
 
             if (tokens.contains(passwordStd.trim())) {
                 System.out.println("PASSWORD MATCH");
-                attendanceRecord.remove(studentID);
-                attendanceRecord.put(studentID, 2);
+                // attendanceRecord.remove(studentID);
+                // attendanceRecord.put(studentID, 2);
+                at.addUser(studentID, 2);
                 tokens.remove(passwordStd.trim());
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
-                attendanceRecord.remove(studentID);
-                attendanceRecord.put(studentID, -1);
+                // attendanceRecord.remove(studentID);
+                // attendanceRecord.put(studentID, -1);
+                at.addUser(studentID, -1);
             }
-
-            // if (passwordStd.trim().equals(passwordProf)) {
-            // System.out.println("PASSWORD MATCH");
-            // attendanceRecord.remove(studentID);
-            // attendanceRecord.put(studentID, 2);
-
-            // } else {
-            // System.out.println("PASSWORD DOESN'T MATCH");
-            // attendanceRecord.remove(studentID);
-            // attendanceRecord.put(studentID, -1);
-            // }
         }
 
     }
