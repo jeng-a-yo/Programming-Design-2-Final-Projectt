@@ -24,6 +24,7 @@ public class ReceiveEmail {
     private String password = "rdbdkmtwafxakdpn";
     private ArrayList<String> tokens = new ArrayList<>();
     private AttendanceTable at = new AttendanceTable();
+    private SendEmail se = new SendEmail();
 
     // public ReceiveEmail(ArrayList<String> tokens, HashMap<String, Integer>
     // attendanceRecord) {
@@ -129,15 +130,6 @@ public class ReceiveEmail {
         }
     }
 
-    public void addZeros() {
-        Set<String> recordedUsers = at.getUserIDSet();
-        for (String users : userEmailList) {
-            if (!recordedUsers.contains(users)) {
-                at.addUser(users, 0);
-            }
-        }
-    }
-
     public void verifyPassword(Part p) throws Exception {
         String studentID = new String();
 
@@ -156,12 +148,13 @@ public class ReceiveEmail {
                 // attendanceRecord.put(studentID, 1);
                 at.addUser(studentID, 1);
                 tokens.remove(passwordStd.trim());
-
+                se.sendReply(studentID, 1);
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
                 // attendanceRecord.remove(studentID);
                 // attendanceRecord.put(studentID, -1);
                 at.addUser(studentID, -1);
+                se.sendReply(studentID, -1);
             }
         }
 
@@ -186,14 +179,26 @@ public class ReceiveEmail {
                 // attendanceRecord.put(studentID, 2);
                 at.addUser(studentID, 2);
                 tokens.remove(passwordStd.trim());
+                se.sendReply(studentID, 2);
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
                 // attendanceRecord.remove(studentID);
                 // attendanceRecord.put(studentID, -1);
                 at.addUser(studentID, -1);
+                se.sendReply(studentID, -1);
             }
         }
 
+    }
+
+    public void addZeros() {
+        Set<String> recordedUsers = at.getUserIDSet();
+        for (String users : userEmailList) {
+            if (!recordedUsers.contains(users)) {
+                at.addUser(users, 0);
+                se.sendReply(users, 0);
+            }
+        }
     }
 
     public void readContent(Part p, String studentID) throws Exception {
