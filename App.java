@@ -34,6 +34,7 @@ public class App{
             try {
                 Thread.sleep(180 * 1000);
                 re.secondCall();
+                re.addZeros();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
