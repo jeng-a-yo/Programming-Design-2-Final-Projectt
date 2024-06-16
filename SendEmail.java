@@ -3,6 +3,7 @@ package Programming_Design_2_Final_Project;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
 
 import javax.mail.*;
@@ -42,17 +43,22 @@ public class SendEmail {
             System.out.println("send failed, exception: " + mex);
         }
     }
-    void sendNotification(){ //need studentList
-        ExecutorService executor = Executors.newFixedThreadPool(3); // TODO: more multithread
+    void sendNotification(List<String> recipientList){ //TODO: probably change type?
+        ExecutorService executor = Executors.newCachedThreadPool();
         String body = "Please reply to this email with the attendance code.\n" +
             "Please respond within 3 minutes. The correct code is case-sensitive.";
-        for(int i = 0; i <= -1; i++){
-            compose("", body); //TODO: put email list here, and do some ding dong
+        for(String recipient : recipientList){
+            executor.submit(compose(recipient, body)); 
         }
-
+        executor.shutdown();
+        try{
+            executor.awaitTermination(10, TimeUnit.MINUTES);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
-    void sendReply(int status, boolean isLate){
-        String body;
+    void sendReply(String recipient, int status){
+        String body = null;
         switch (status) {
             case -1:
                 //wrong
@@ -74,5 +80,10 @@ public class SendEmail {
                 body = "Your attendance code is correct. You are marked as Late.";
                 break;
         }
+        compose("", body);
+    }
+    void sendTimeout(){
+        //TODO: timeout, absent
+        String body = null;
     }
 }
