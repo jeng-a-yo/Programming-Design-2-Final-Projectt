@@ -1,6 +1,5 @@
 package Programming_Design_2_Final_Project;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
