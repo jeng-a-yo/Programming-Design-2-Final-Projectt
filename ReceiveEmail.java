@@ -14,8 +14,9 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 
-class ReceiveEmail {
-    private HashMap<String, Integer> attendanceRecord = new HashMap<>();
+public class ReceiveEmail {
+    // private HashMap<String, Integer> attendanceRecord = new HashMap<>();
+    private ArrayList<String> userEmailList = new ArrayList<String>();
     private String passwordStd;
     private String pop3Host = "pop.gmail.com";
     // private String storeType = "pop3";
@@ -24,11 +25,13 @@ class ReceiveEmail {
     private ArrayList<String> tokens = new ArrayList<>();
     private AttendanceTable at = new AttendanceTable();
 
-    public FetchEmail(ArrayList<String> tokens, HashMap<String, Integer> attendanceRecord) {
+    // public ReceiveEmail(ArrayList<String> tokens, HashMap<String, Integer>
+    // attendanceRecord) {
 
-        // public FetchEmail(ArrayList<String> tokens) {
+    public ReceiveEmail(ArrayList<String> tokens, ArrayList<String> userEmailList) {
         this.tokens = tokens;
-        this.attendanceRecord = attendanceRecord;
+        // this.attendanceRecord = attendanceRecord;
+        this.userEmailList = userEmailList;
     }
 
     public void firstCall() {
@@ -62,10 +65,10 @@ class ReceiveEmail {
             System.out.println("============================");
 
             // print out attendance table
-            for (String s : attendanceRecord.keySet()) {
-                System.out.println("StudentID: " + s + ",Status: " +
-                        attendanceRecord.get(s));
-            }
+            // for (String s : attendanceRecord.keySet()) {
+            // System.out.println("StudentID: " + s + ",Status: " +
+            // attendanceRecord.get(s));
+            // }
 
             emailFolder.close(false);
             store.close();
@@ -109,10 +112,10 @@ class ReceiveEmail {
             System.out.println("============================");
 
             // print out attendance table
-            for (String s : attendanceRecord.keySet()) {
-                System.out.println("StudentID: " + s + ",Status: " +
-                        attendanceRecord.get(s));
-            }
+            // for (String s : attendanceRecord.keySet()) {
+            // System.out.println("StudentID: " + s + ",Status: " +
+            // attendanceRecord.get(s));
+            // }
 
             emailFolder.close(false);
             store.close();
@@ -123,6 +126,15 @@ class ReceiveEmail {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void addZeros() {
+        Set<String> recordedUsers = at.getUserIDSet();
+        for (String users : userEmailList) {
+            if (!recordedUsers.contains(users)) {
+                at.addUser(users, 0);
+            }
         }
     }
 
@@ -140,15 +152,15 @@ class ReceiveEmail {
 
             if (tokens.contains(passwordStd.trim())) {
                 System.out.println("PASSWORD MATCH");
-                attendanceRecord.remove(studentID);
-                attendanceRecord.put(studentID, 1);
+                // attendanceRecord.remove(studentID);
+                // attendanceRecord.put(studentID, 1);
                 at.addUser(studentID, 1);
                 tokens.remove(passwordStd.trim());
 
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
-                attendanceRecord.remove(studentID);
-                attendanceRecord.put(studentID, -1);
+                // attendanceRecord.remove(studentID);
+                // attendanceRecord.put(studentID, -1);
                 at.addUser(studentID, -1);
             }
         }
@@ -170,14 +182,14 @@ class ReceiveEmail {
 
             if (tokens.contains(passwordStd.trim())) {
                 System.out.println("PASSWORD MATCH");
-                attendanceRecord.remove(studentID);
-                attendanceRecord.put(studentID, 2);
+                // attendanceRecord.remove(studentID);
+                // attendanceRecord.put(studentID, 2);
                 at.addUser(studentID, 2);
                 tokens.remove(passwordStd.trim());
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
-                attendanceRecord.remove(studentID);
-                attendanceRecord.put(studentID, -1);
+                // attendanceRecord.remove(studentID);
+                // attendanceRecord.put(studentID, -1);
                 at.addUser(studentID, -1);
             }
         }
@@ -228,6 +240,10 @@ class ReceiveEmail {
         }
 
         return studentID;
+    }
+
+    public void serializeAttendanceTable(String directory) {
+        at.serializeAttendanceTable(directory);
     }
 
 }
