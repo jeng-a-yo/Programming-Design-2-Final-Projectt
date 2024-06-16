@@ -11,7 +11,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 public class SendEmail {
-    private HashMap<String, String> attendanceRecord = new HashMap<>();
+    private HashMap<String, String> attendanceRecord = new HashMap<>(); //TODO unused?
     private String sender = "albert920507@gmail.com";
     private String username = "albert920507";
     private String password = "rdbdkmtwafxakdpn";
@@ -81,11 +81,11 @@ public class SendEmail {
                 body = "Your attendance code is correct. You are marked as Late.";
                 break;
         }
-        compose("", body);
+        compose(recipient, body);
     }
-    void sendTimeout(){
+    void sendTimeout(String recipient){
         //timeout, absent
         String body = "You did not reply to the attendance code on time. You are marked as absent.";
-        compose("", body);
+        compose(recipient, body);
     }
 }
