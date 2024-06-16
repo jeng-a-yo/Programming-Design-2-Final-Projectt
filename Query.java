@@ -10,20 +10,22 @@ import myPackage.*;
 
 class Query {
 
-    public String checkIdOrDate(String input) {
+    public int parserMode(String queryData) {
        
         String idPattern = "^[A-Za-z][A-Za-z0-9]{8}$";
         String datePattern = "^\\d{4}-\\d{2}-\\d{2}$";
 
-        if (Pattern.matches(idPattern, input)) {
-            return "ID";
+        if (Pattern.matches(idPattern, queryData) && Pattern.matches(datePattern, queryData)) {
+            return 0;
+        }else if (Pattern.matches(idPattern, queryData)) {
+            return 1;
+        }else if (Pattern.matches(datePattern, queryData)) {
+            return 2;
+        }else {
+            return -1;
         }
 
-        if (Pattern.matches(datePattern, input)) {
-            return "Date";
-        }
-
-        return "Unknown";
+        
     }
 
     //AttendanceTable table = new AttendanceTable();
