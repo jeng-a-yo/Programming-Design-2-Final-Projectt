@@ -23,9 +23,14 @@ public class App{
 
             SendEmail sendEmail = new SendEmail();
 
-
+            
             sendEmail.sendNotificationEmail(userEmailList);
-
+            TokenGenerator tg=new TokenGenerator();
+            ArrayList<String> generateTokens=tg.generateTokens(4);
+            
+            ReceiveEmail re=new ReceiveEmail();
+            
+            
             
 
 
