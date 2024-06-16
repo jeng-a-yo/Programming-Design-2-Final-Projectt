@@ -13,7 +13,6 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 
-
 public class ReceiveEmail {
     // public static void main(String[] args) {
 
@@ -22,7 +21,7 @@ public class ReceiveEmail {
 }
 
 class FetchEmail {
-    private HashMap<String, String> attendanceRecord = new HashMap<>();
+    private HashMap<String, Integer> attendanceRecord = new HashMap<>();
     private String passwordStd;
     private String pop3Host = "pop.gmail.com";
     // private String storeType = "pop3";
@@ -90,10 +89,10 @@ class FetchEmail {
 
             if (passwordStd.trim().equals(passwordProf)) {
                 System.out.println("PASSWORD MATCH!!");
-                attendanceRecord.put(studentID, "ATTENDED");
+                attendanceRecord.put(studentID, 1);
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH!!");
-                attendanceRecord.put(studentID, "ABSENT");
+                attendanceRecord.put(studentID, -1);
             }
         }
 
@@ -113,17 +112,17 @@ class FetchEmail {
             System.out.print(",passwordStd: [" + passwordStd.trim() + "]\n");
 
             if (passwordStd.trim().equals(passwordProf)) {
-                System.out.println("PASSWORD MATCH BUT LATE!!!");
+                System.out.println("PASSWORD MATCH");
                 if (attendanceRecord.keySet().contains(studentID)) {
                     attendanceRecord.remove(studentID);
-                    attendanceRecord.put(studentID, "LATE");
+                    attendanceRecord.put(studentID, 2);
                 } else {
-                    attendanceRecord.put(studentID, "LATE");
+                    attendanceRecord.put(studentID, 2);
                 }
 
             } else {
-                System.out.println("PASSWORD DOESN'T MATCH!!");
-                attendanceRecord.put(studentID, "ABSENT");
+                System.out.println("PASSWORD DOESN'T MATCH");
+                attendanceRecord.put(studentID, -1);
             }
         }
 
