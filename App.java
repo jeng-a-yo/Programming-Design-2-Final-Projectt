@@ -35,9 +35,20 @@ public class App{
                 Thread.sleep(180 * 1000);
                 re.secondCall();
                 re.addZeros();
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            String directory = "data";
+            Path path = Paths.get(System.getProperty("user.dir"), "Programming_Design_2_Final_Project", directory);
+
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            re.serializeAttendanceTable(directory);
             
             
 
