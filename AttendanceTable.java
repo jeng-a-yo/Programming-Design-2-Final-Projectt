@@ -8,9 +8,9 @@ public class AttendanceTable implements Serializable {
     private Map<String, Integer> attendanceMap = new HashMap<>();
     private Map<String, String> signInTimeMap = new HashMap<>();
 
-    public void addUser(String userID, int attendance) {
-        attendanceMap.put(userID, attendance);
-        if (attendance == 0){
+    public void addUser(String userID, int status) {
+        attendanceMap.put(userID, status);
+        if (status == -1){
             signInTimeMap.put(userID, null);
         }else{
             String signInTime = getCurrentTime();
