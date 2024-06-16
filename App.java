@@ -41,7 +41,7 @@ public class App{
             }
 
             String directory = "data";
-            Path path = Paths.get(System.getProperty("user.dir"), "Programming_Design_2_Final_Project", directory);
+            Path path = Paths.get(System.getProperty("user.dir"), directory);
 
             try {
                 Files.createDirectories(path);
