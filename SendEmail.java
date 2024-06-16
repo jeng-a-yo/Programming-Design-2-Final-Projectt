@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -48,7 +49,7 @@ public class SendEmail {
         String body = "Please reply to this email with the attendance code.\n" +
             "Please respond within 3 minutes. The correct code is case-sensitive.";
         for(String recipient : recipientList){
-            executor.submit(compose(recipient, body)); 
+            executor.submit(()-> compose(recipient, body));
         }
         executor.shutdown();
         try{
@@ -83,7 +84,8 @@ public class SendEmail {
         compose("", body);
     }
     void sendTimeout(){
-        //TODO: timeout, absent
-        String body = null;
+        //timeout, absent
+        String body = "You did not reply to the attendance code on time. You are marked as absent.";
+        compose("", body);
     }
 }
