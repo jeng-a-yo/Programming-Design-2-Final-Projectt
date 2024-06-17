@@ -1,0 +1,22 @@
+graph TD
+    Mode -- 0 --> A
+
+    A[Record] --> B[Send Notification to All User]
+    B --> C[Waiting User Reply]
+    
+    C -->|no| D[收到1 user@gmail.com，內容：token]
+    C -->|late| E[收到2 user@gmail.com，內容：token]
+    
+    D -->|correct| F[send success email] --> G[1]
+    D -->|incorrect| H[send error email] --> I[-1]
+    
+    E -->|correct| J[send success email] --> K[2]
+    E -->|incorrect| L[send absent email] --> M[0]
+
+
+    Mode -- 1 --> N
+
+    N[Query] --> |ID + Date| O[Status]
+    N[Query] --> |ID| P[Date: Status ... Persentage]
+    N[Query] --> |Date| Q[ID: Status at SignInTime]
+
