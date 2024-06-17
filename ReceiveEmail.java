@@ -1,8 +1,11 @@
 package Programming_Design_2_Final_Project;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Set;
+
 import javax.mail.Address;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -15,7 +18,7 @@ import javax.mail.Store;
 import javax.mail.internet.InternetAddress;
 
 public class ReceiveEmail {
-    // private HashMap<String, Integer> attendanceRecord = new HashMap<>();
+    private HashMap<String, Integer> attendanceRecord = new HashMap<>();
     private ArrayList<String> userEmailList = new ArrayList<String>();
     private String passwordStd;
     private String pop3Host = "pop.gmail.com";
@@ -99,8 +102,8 @@ public class ReceiveEmail {
             Message[] messages = emailFolder.getMessages();
             System.out.println("messages.length---" + messages.length);
 
-            String passwordProf = "niuewfnw"; // change accordingly
-            System.out.println("Correct Password: " + passwordProf);
+            // String passwordProf = "niuewfnw"; // change accordingly
+            // System.out.println("Correct Password: " + passwordProf);
             System.out.println("============================");
 
             for (int i = 0; i < messages.length; i++) {
@@ -141,20 +144,20 @@ public class ReceiveEmail {
             // System.out.println("passwordStd: " + passwordStd);
             System.out.print("studentID:" + studentID);
             System.out.print(",passwordStd: [" + passwordStd.trim() + "]\n");
-
+            String fullEmailAddress = studentID + "@gs.ncku.edu.tw";
             if (tokens.contains(passwordStd.trim())) {
                 System.out.println("PASSWORD MATCH");
                 // attendanceRecord.remove(studentID);
                 // attendanceRecord.put(studentID, 1);
                 at.addUser(studentID, 1);
                 tokens.remove(passwordStd.trim());
-                se.sendReplyEmail(studentID, 1);
+                se.sendReplyEmail(fullEmailAddress, 1);
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
                 // attendanceRecord.remove(studentID);
                 // attendanceRecord.put(studentID, -1);
-                at.addUser(studentID, 0);
-                se.sendReplyEmail(studentID, 0);
+                at.addUser(studentID, -1);
+                se.sendReplyEmail(fullEmailAddress, -1);
             }
         }
 
@@ -171,6 +174,7 @@ public class ReceiveEmail {
             readContent(p, studentID);
             System.out.println("passwordStd: " + passwordStd);
             System.out.print("studentID:" + studentID);
+            String fullEmailAddress = studentID + "@gs.ncku.edu.tw";
             System.out.print(",passwordStd: [" + passwordStd.trim() + "]\n");
 
             if (tokens.contains(passwordStd.trim())) {
@@ -179,13 +183,13 @@ public class ReceiveEmail {
                 // attendanceRecord.put(studentID, 2);
                 at.addUser(studentID, 2);
                 tokens.remove(passwordStd.trim());
-                se.sendReplyEmail(studentID, 2);
+                se.sendReplyEmail(fullEmailAddress, 2);
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
                 // attendanceRecord.remove(studentID);
                 // attendanceRecord.put(studentID, -1);
-                at.addUser(studentID, -1);
-                se.sendReplyEmail(studentID, -1);
+                at.addUser(studentID, 0);
+                se.sendReplyEmail(fullEmailAddress, 0);
             }
         }
 
@@ -194,6 +198,8 @@ public class ReceiveEmail {
     public void addZeros() {
         Set<String> recordedUsers = at.getUserIDSet();
         for (String users : userEmailList) {
+            int atLoc = users.indexOf("@");
+            user = users.substring(0, atLoc).toLowerCase();
             if (!recordedUsers.contains(users)) {
                 at.addUser(users, 0);
                 se.sendReplyEmail(users, 0);
@@ -205,6 +211,7 @@ public class ReceiveEmail {
 
         if (p.isMimeType("text/plain")) {
             String content = (String) p.getContent();
+            System.out.println("content: " + content);
             String target = studentID + ":";
             if (content.indexOf(target) != -1) {
                 int start = content.indexOf(target);
@@ -212,6 +219,7 @@ public class ReceiveEmail {
                 String temp = content.substring(start, end);
                 passwordStd = temp.substring(temp.indexOf(":") + 1);
             }
+            // password = content.trim();
             return;
         } else if (p.isMimeType("multipart/*")) {
             Multipart mp = (Multipart) p.getContent();
@@ -236,7 +244,7 @@ public class ReceiveEmail {
                 if (address instanceof InternetAddress) {
                     String email = ((InternetAddress) address).getAddress();
                     int at = email.indexOf("@");
-                    studentID = email.substring(0, at);
+                    studentID = email.substring(0, at).toLowerCase();
                 }
             }
         } else {
@@ -249,6 +257,13 @@ public class ReceiveEmail {
 
     public void serializeAttendanceTable(String directory) {
         at.serializeAttendanceTable(directory);
+    }
+
+    public void outputAttendanceTable() {
+        attendanceRecord = (HashMap) at.getAttendanceTable();
+        for (String s : attendanceRecord.keySet()) {
+            System.out.println("StudentID: " + s + ",Status: " + attendanceRecord.get(s));
+        }
     }
 
 }
