@@ -1,4 +1,5 @@
 package Programming_Design_2_Final_Project;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,7 +8,7 @@ import java.util.regex.Pattern;
 import java.text.SimpleDateFormat;
 
 
-public class Query {
+class Query {
 
     public int parserMode(String queryData) {
         
@@ -77,7 +78,7 @@ public class Query {
                         String date = filename.substring(0, idxOfdot); 
                         int status = table.getAttendance(userID);
 
-                        if (status != 0 ){
+                        if (status == 1 || status == 2) {
                             attendanceSum += 1;
 
                             if (status == 2) {
@@ -85,7 +86,7 @@ public class Query {
                             }
                         }
 
-                        output.append(date + ":" + attendanceConversion(status) + "\n");
+                        output.append(date + ":" + " --" + attendanceConversion(status) + "-- " + "\n");
                         // 2024-06-08 : --absent--
                     }
                 }
@@ -138,6 +139,8 @@ public class Query {
                 return "Present";
             case 2:
                 return "Late";
+            case -1:
+                return "Invalid";
             default:
                 return "Unknown";
         } 
