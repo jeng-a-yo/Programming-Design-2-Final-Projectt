@@ -200,9 +200,10 @@ public class ReceiveEmail {
         for (String users : userEmailList) {
             int atLoc = users.indexOf("@");
             users = users.substring(0, atLoc).toLowerCase();
+            String fullEmailAddress = users + "@gs.ncku.edu.tw";
             if (!recordedUsers.contains(users)) {
                 at.addUser(users, 0);
-                se.sendReplyEmail(users, 0);
+                se.sendReplyEmail(fullEmailAddress, 0);
             }
         }
     }

@@ -48,7 +48,7 @@ public class SendEmail {
             System.out.println("send failed, exception: " + mex);
         }
     }
-    public void sendNotificationEmail(List<String> recipientEmailList){ //TODO: probably change type?
+    public void sendNotificationEmail(List<String> recipientEmailList){
         ExecutorService executor = Executors.newCachedThreadPool();
         String body = "Please reply to this email with the attendance code.\n" +
             "Please respond within 3 minutes. The correct code is case-sensitive.";

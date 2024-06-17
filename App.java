@@ -104,6 +104,7 @@ public class App {
         } else {
             System.out.println("Invalid Mode");
         }
+        scanner.close();
     }
 }
 
@@ -128,5 +129,5 @@ class TokenGenerator {
         }
         return token.toString();
     }
-
+    
 }
