@@ -36,11 +36,11 @@ public class Query {
 
         
         if (!Files.exists(Paths.get(filePath))) {
-            return "Invalid date";
+            return "Invalid ID or date";
         }
 
         AttendanceTable table = new AttendanceTable();
-        table.deserializeAttendanceTable(dictionary, filename);
+        table = table.deserializeAttendanceTable(dictionary, filename);
 
         int status = table.getAttendance(userID);
 
@@ -70,7 +70,7 @@ public class Query {
                 for (File file : files) {
 
                     String filename = file.getName();
-                    table.deserializeAttendanceTable(dictionary, filename);
+                    table = table.deserializeAttendanceTable(dictionary, filename);
                     
                     if (file.isFile() && filename.matches("\\d{4}-\\d{2}-\\d{2}.ser")) {
 
@@ -109,9 +109,14 @@ public class Query {
 
         String dictionary = "data";
         String filename = date + ".ser";
+        String filePath = dictionary + File.separator + filename;
+
+        if (!Files.exists(Paths.get(filePath))) {
+            return "Invalid date";
+        }
 
         AttendanceTable table = new AttendanceTable();
-        table.deserializeAttendanceTable(dictionary, filename);
+        table = table.deserializeAttendanceTable(dictionary, filename);
 
         Set<String> UserIDSet = table.getUserIDSet();
         List<String> UserIDs = new ArrayList<String>(UserIDSet);
