@@ -153,8 +153,8 @@ public class ReceiveEmail {
                 System.out.println("PASSWORD DIDN'T MATCH");
                 // attendanceRecord.remove(studentID);
                 // attendanceRecord.put(studentID, -1);
-                at.addUser(studentID, -1);
-                se.sendReply(studentID, -1);
+                at.addUser(studentID, 0);
+                se.sendReply(studentID, 0);
             }
         }
 
