@@ -1,9 +1,10 @@
-package Programming_Design_2_Final_Project;
+//package Programming_Design_2_Final_Project;
 
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +17,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
-    private HashMap<String, String> attendanceRecord = new HashMap<>(); //TODO unused?
     private String sender = "albert920507@gmail.com";
     private String username = "albert920507";
     private String password = "rdbdkmtwafxakdpn";
@@ -24,7 +24,7 @@ public class SendEmail {
     private String smtpPort = "587";
 
     //sending the email 
-    void compose(String recipient, String body){
+    private void compose(String recipient, String body){
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
@@ -43,8 +43,9 @@ public class SendEmail {
             message.setRecipients(Message.RecipientType.TO,
                             InternetAddress.parse(recipient));
             message.setSubject("點名");
-            message.setText("Hello, world!\n");
+            message.setText(body);
             Transport.send(message, sender, password);
+            System.out.println("it sent...");
         } catch (MessagingException mex) {
             System.out.println("send failed, exception: " + mex);
         }
@@ -54,7 +55,7 @@ public class SendEmail {
         String body = "Please reply to this email with the attendance code.\n" +
             "Please respond within 3 minutes. The correct code is case-sensitive.";
         for(String recipient : recipientList){
-            executor.submit(()-> compose(recipient, body));
+            executor.execute(()-> compose(recipient, body));
         }
         executor.shutdown();
         try{
@@ -93,4 +94,11 @@ public class SendEmail {
         String body = "You did not reply to the attendance code on time. You are marked as absent.";
         compose(recipient, body);
     }
+
+    // public static void main(String[] args) {
+    //     SendEmail mySendEmail = new SendEmail();
+    //     ArrayList<String> emailList = new ArrayList<>(4);
+    //     emailList.add("cubruce1103@gmail.com");
+    //     mySendEmail.sendNotificationEmail(emailList);
+    // }
 }
