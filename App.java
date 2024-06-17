@@ -28,7 +28,7 @@ public class App{
             
             TokenGenerator tg = new TokenGenerator();
             ArrayList<String> generateTokens = tg.generateTokens(4);
-            ReceiveEmail re = new ReceiveEmail(generateTokens);
+            ReceiveEmail re = new ReceiveEmail(generateTokens, userEmailList);
 
             re.firstCall();
             try {
