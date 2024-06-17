@@ -103,10 +103,10 @@ class TokenGenerator {
     private static final SecureRandom random = new SecureRandom();
 
     public static ArrayList<String> generateTokens(int n) {
-        ArrayList tokens = new ArrayList<>();
+        ArrayList<String> tokens = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             String token = generateRandomAlphanumericToken(6);
-            tokens.add(token)
+            tokens.add(token);
         }
         return tokens;
     }
