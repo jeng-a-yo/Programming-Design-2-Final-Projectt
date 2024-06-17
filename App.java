@@ -9,6 +9,8 @@ import Programming_Design_2_Final_Project.*;
 
 public class App {
     public static void main(String[] args) {
+        int firstDelay  = 90*1000;
+        int secondDelay = 60*1000;
 
         ArrayList<String> userEmailList = new ArrayList<String>();
         userEmailList.add("c14121048@gs.ncku.edu.tw");
@@ -39,11 +41,11 @@ public class App {
             ReceiveEmail re = new ReceiveEmail(generateTokens, userEmailList);
 
             try {
-                Thread.sleep(60 * 1000);
+                Thread.sleep(firstDelay); //first call
                 re.firstCall();
                 re.outputAttendanceTable();
 
-                Thread.sleep(180 * 1000);
+                Thread.sleep(secondDelay); //second call
                 re.secondCall();
                 re.addZeros();
                 re.outputAttendanceTable();
