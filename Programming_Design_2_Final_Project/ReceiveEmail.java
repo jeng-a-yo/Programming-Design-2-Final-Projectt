@@ -211,7 +211,7 @@ public class ReceiveEmail {
 
         if (p.isMimeType("text/plain")) {
             String content = (String) p.getContent();
-            System.out.println("content: " + content);
+            // System.out.println("content: " + content);
             String target = studentID + ":";
             if (content.indexOf(target) != -1) {
                 int start = content.indexOf(target);
