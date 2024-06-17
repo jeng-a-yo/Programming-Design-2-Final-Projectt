@@ -199,7 +199,7 @@ public class ReceiveEmail {
         Set<String> recordedUsers = at.getUserIDSet();
         for (String users : userEmailList) {
             int atLoc = users.indexOf("@");
-            user = users.substring(0, atLoc).toLowerCase();
+            users = users.substring(0, atLoc).toLowerCase();
             if (!recordedUsers.contains(users)) {
                 at.addUser(users, 0);
                 se.sendReplyEmail(users, 0);
