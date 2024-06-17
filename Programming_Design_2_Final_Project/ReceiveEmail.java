@@ -199,7 +199,7 @@ public class ReceiveEmail {
         Set<String> recordedUsers = at.getUserIDSet();
         for (String users : userEmailList) {
             int atLoc = users.indexOf("@");
-            user = users.substring(0, atLoc).toLowerCase();
+            users = users.substring(0, atLoc).toLowerCase();
             if (!recordedUsers.contains(users)) {
                 at.addUser(users, 0);
                 se.sendReplyEmail(users, 0);
@@ -211,7 +211,7 @@ public class ReceiveEmail {
 
         if (p.isMimeType("text/plain")) {
             String content = (String) p.getContent();
-            System.out.println("content: " + content);
+            // System.out.println("content: " + content);
             String target = studentID + ":";
             if (content.indexOf(target) != -1) {
                 int start = content.indexOf(target);
@@ -260,7 +260,7 @@ public class ReceiveEmail {
     }
 
     public void outputAttendanceTable() {
-        attendanceRecord = (HashMap) at.getAttendanceTable();
+        attendanceRecord = at.getAttendanceTable();
         for (String s : attendanceRecord.keySet()) {
             System.out.println("StudentID: " + s + ",Status: " + attendanceRecord.get(s));
         }

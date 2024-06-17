@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import java.text.SimpleDateFormat;
 
 
-class Query {
+public class Query {
 
     public int parserMode(String queryData) {
         
