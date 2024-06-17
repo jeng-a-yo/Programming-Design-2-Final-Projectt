@@ -24,6 +24,9 @@ public class AttendanceTable implements Serializable {
         return sdf.format(new Date());
     }
 
+    public HashMap<String, Integer> getAttendanceTable() {
+        return attendanceMap;
+    }
     public Set<String> getUserIDSet() {
         return attendanceMap.keySet();
     }
