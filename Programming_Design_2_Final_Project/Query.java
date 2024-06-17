@@ -44,7 +44,7 @@ public class Query {
 
         int status = table.getAttendance(userID);
 
-        return attendanceConversion(status) + table.getSignInTime(userID);
+        return attendanceConversion(status) + " at " + table.getSignInTime(userID);
     }
 
 
@@ -91,8 +91,8 @@ public class Query {
                     }
                 }
                 
-                Double attendancePercentage = attendanceSum / expectedAttendance;
-                String attendancePercentageString = String.format("Attendance percentage : %.2f (Late : %d)", attendancePercentage, lateCount);
+                double attendancePercentage = (attendanceSum / expectedAttendance) * 100;  // 計算百分比
+                String attendancePercentageString = String.format("Attendance percentage : %.2f%% (Late : %d)", attendancePercentage, lateCount);
                 return output.toString() + "\n" + attendancePercentageString;
 
             } else {
