@@ -59,7 +59,7 @@ public class AttendanceTable implements Serializable {
         }
     }
 
-    public static AttendanceTable deserializeAttendanceTable(String directory, String filename) {
+    public AttendanceTable deserializeAttendanceTable(String directory, String filename) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(directory, filename)))) {
             return (AttendanceTable) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
