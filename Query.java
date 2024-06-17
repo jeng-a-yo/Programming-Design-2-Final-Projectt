@@ -10,21 +10,20 @@ import java.text.SimpleDateFormat;
 class Query {
 
     public int parserMode(String queryData) {
-       
+        
         String idPattern = "^[A-Za-z][A-Za-z0-9]{8}$";
         String datePattern = "^\\d{4}-\\d{2}-\\d{2}$";
+        String idDatePattern = "^[A-Za-z][A-Za-z0-9]{8}\\s\\d{4}-\\d{2}-\\d{2}$";
 
-        if (Pattern.matches(idPattern, queryData) && Pattern.matches(datePattern, queryData)) {
-            return 0;
-        }else if (Pattern.matches(idPattern, queryData)) {
-            return 1;
-        }else if (Pattern.matches(datePattern, queryData)) {
-            return 2;
-        }else {
-            return -1;
+        if (Pattern.matches(idDatePattern, queryData)) {
+            return 0;  // ID + Date
+        } else if (Pattern.matches(idPattern, queryData)) {
+            return 1;  // ID
+        } else if (Pattern.matches(datePattern, queryData)) {
+            return 2;  // Date
+        } else {
+            return -1; // Invalid
         }
-
-        
     }
 
     
@@ -51,11 +50,11 @@ class Query {
 
     public String getAttendanceByID(String userID) {
 
-        String dictioinary = "data";
+        String dictionary = "data";
         
         AttendanceTable table = new AttendanceTable();
         
-        File folder = new File(dictioinary); 
+        File folder = new File(dictionary); 
         if (folder.isDirectory()) {
             File[] files = folder.listFiles();
             
@@ -70,12 +69,12 @@ class Query {
                 for (File file : files) {
 
                     String filename = file.getName();
-                    table.deserializeAttendanceTable(dictioinary, filename);
+                    table.deserializeAttendanceTable(dictionary, filename);
                     
                     if (file.isFile() && filename.matches("\\d{4}-\\d{2}-\\d{2}.ser")) {
 
                         int idxOfdot = filename.indexOf(".");
-                        String date = filename.substring(0, idxOfdot - 1); 
+                        String date = filename.substring(0, idxOfdot); 
                         int status = table.getAttendance(userID);
 
                         if (status != 0 ){
@@ -92,7 +91,7 @@ class Query {
                 }
                 
                 Double attendancePercentage = attendanceSum / expectedAttendance;
-                String attendancePercentageString = "Attendance percentage : " + Double.toString(attendancePercentage)  + "(Late : " + lateCount + ")";
+                String attendancePercentageString = String.format("Attendance percentage : %.2f (Late : %d)", attendancePercentage, lateCount);
                 return output.toString() + "\n" + attendancePercentageString;
 
             } else {
@@ -107,11 +106,11 @@ class Query {
 
     public String getAtendanceByDate (String date) {
 
-        String dictioinary = "data";
+        String dictionary = "data";
         String filename = date + ".ser";
 
         AttendanceTable table = new AttendanceTable();
-        table.deserializeAttendanceTable(dictioinary, filename);
+        table.deserializeAttendanceTable(dictionary, filename);
 
         Set<String> UserIDSet = table.getUserIDSet();
         List<String> UserIDs = new ArrayList<String>(UserIDSet);
