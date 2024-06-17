@@ -1,11 +1,9 @@
-//package Programming_Design_2_Final_Project;
+package Programming_Design_2_Final_Project;
 
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.mail.Message;
@@ -24,7 +22,7 @@ public class SendEmail {
     private String smtpPort = "587";
 
     //sending the email 
-    private void compose(String recipient, String body){
+    private void compose(String recipientEmail, String body){
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
@@ -41,7 +39,7 @@ public class SendEmail {
             MimeMessage message = new MimeMessage(emailSession);
             message.setFrom(sender);
             message.setRecipients(Message.RecipientType.TO,
-                            InternetAddress.parse(recipient));
+                            InternetAddress.parse(recipientEmail));
             message.setSubject("點名");
             message.setText(body);
             Transport.send(message, sender, password);
@@ -50,12 +48,12 @@ public class SendEmail {
             System.out.println("send failed, exception: " + mex);
         }
     }
-    void sendNotificationEmail(List<String> recipientList){ //TODO: probably change type?
+    void sendNotificationEmail(List<String> recipientEmailList){ //TODO: probably change type?
         ExecutorService executor = Executors.newCachedThreadPool();
         String body = "Please reply to this email with the attendance code.\n" +
             "Please respond within 3 minutes. The correct code is case-sensitive.";
-        for(String recipient : recipientList){
-            executor.execute(()-> compose(recipient, body));
+        for(String recipientEmail : recipientEmailList){
+            executor.execute(()-> compose(recipientEmail, body));
         }
         executor.shutdown();
         try{
@@ -64,7 +62,7 @@ public class SendEmail {
             e.printStackTrace();
         }
     }
-    void sendReplyEmail(String recipient, int status){
+    void sendReplyEmail(String recipientEmail, int status){
         String body = null;
         switch (status) {
             case -1:
@@ -87,12 +85,12 @@ public class SendEmail {
                 body = "Your attendance code is correct. You are marked as Late.";
                 break;
         }
-        compose(recipient, body);
+        compose(recipientEmail, body);
     }
-    void sendTimeoutEmail(String recipient){
+    void sendTimeoutEmail(String recipientEmail){
         //timeout, absent
         String body = "You did not reply to the attendance code on time. You are marked as absent.";
-        compose(recipient, body);
+        compose(recipientEmail, body);
     }
 
     // public static void main(String[] args) {
