@@ -1,5 +1,7 @@
 package Programming_Design_2_Final_Project;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.text.SimpleDateFormat;
@@ -25,62 +27,73 @@ class Query {
         
     }
 
-    //AttendanceTable table = new AttendanceTable();
-    public String getAttendanceByIDAndDate (String userID, String signInTime) {
+    
+    public String getAttendanceByIDAndDate(String userID, String date) {
+
+        String dictionary = "data";
+        String filename = date + ".ser";
+        String filePath = dictionary + File.separator + filename;
+
         
-        String dictioinary = "";
-        String filename = "";
-        String path = dictioinary + filename + ".ser";
+        if (!Files.exists(Paths.get(filePath))) {
+            return "Invalid date";
+        }
 
         AttendanceTable table = new AttendanceTable();
-        table.deserializeAttendanceTable(path);
+        table.deserializeAttendanceTable(dictionary, filename);
 
-        int attendance = table.getAttendance(userID);
-        
-        return attendanceConversion(attendance) + table.getSignInTime(userID);
-        
+        int status = table.getAttendance(userID);
+
+        return attendanceConversion(status) + table.getSignInTime(userID);
     }
+
 
 
     public String getAttendanceByID(String userID) {
 
-        String dictioinary = "";
+        String dictioinary = "data";
         
         AttendanceTable table = new AttendanceTable();
         
-        File folder = new File(dictioinary); // 替換為資料夾路徑
+        File folder = new File(dictioinary); 
         if (folder.isDirectory()) {
             File[] files = folder.listFiles();
             
             if (files != null) {
 
                 int expectedAttendance = files.length;
-                int attendanceSum = 0;
-                StringBuilder dateRow = new StringBuilder();
-                StringBuilder attendanceRow = new StringBuilder();
+                Double attendanceSum = 0.0;
+                int lateCount = 0;
+                StringBuilder output = new StringBuilder();
+                
 
                 for (File file : files) {
 
                     String filename = file.getName();
-                    table.deserializeAttendanceTable(filename);
+                    table.deserializeAttendanceTable(dictioinary, filename);
                     
                     if (file.isFile() && filename.matches("\\d{4}-\\d{2}-\\d{2}.ser")) {
+
                         int idxOfdot = filename.indexOf(".");
                         String date = filename.substring(0, idxOfdot - 1); 
-                        int attendance = table.getAttendance(userID);
+                        int status = table.getAttendance(userID);
 
-                        attendanceSum += attendance;
+                        if (status != 0 ){
+                            attendanceSum += 1;
 
-                        dateRow.append(date + " ");
-                        attendanceRow.append("--" + attendanceConversion(table.getAttendance(userID)) + "-- ");
-                        // 2024-06-08
-                        // --absent--    
+                            if (status == 2) {
+                                lateCount += 1;
+                            }
+                        }
+
+                        output.append(date + ":" + attendanceConversion(status) + "\n");
+                        // 2024-06-08 : --absent--
                     }
-
                 }
                 
-                String attendancePercentage = "Attendance percentage : " + Integer.toString(attendanceSum / expectedAttendance);
-                return dateRow.toString() + "\n" + attendanceRow.toString() + "\n" + attendancePercentage;
+                Double attendancePercentage = attendanceSum / expectedAttendance;
+                String attendancePercentageString = "Attendance percentage : " + Double.toString(attendancePercentage)  + "(Late : " + lateCount + ")";
+                return output.toString() + "\n" + attendancePercentageString;
 
             } else {
                 return ("The folder is empty or an error occurred.");
@@ -94,12 +107,11 @@ class Query {
 
     public String getAtendanceByDate (String date) {
 
-        String dictioinary = "";
-        String filename = "";
-        String path = dictioinary + filename + ".ser";
+        String dictioinary = "data";
+        String filename = date + ".ser";
 
         AttendanceTable table = new AttendanceTable();
-        table.deserializeAttendanceTable(path);
+        table.deserializeAttendanceTable(dictioinary, filename);
 
         Set<String> UserIDSet = table.getUserIDSet();
         List<String> UserIDs = new ArrayList<String>(UserIDSet);
@@ -118,10 +130,21 @@ class Query {
     }
 
 
-    public String attendanceConversion(int attendance){
+    public String attendanceConversion(int status){
 
-        return attendance == 0 ? "Absent" : "Present";
+        switch(status) {
+            case 0:
+                return "Absent";
+            case 1:
+                return "Present";
+            case 2:
+                return "Late";
+            default:
+                return "Unknown";
+        } 
     }
 
 
 }
+
+
