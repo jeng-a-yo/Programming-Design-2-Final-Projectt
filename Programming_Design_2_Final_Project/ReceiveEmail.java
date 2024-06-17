@@ -260,7 +260,7 @@ public class ReceiveEmail {
     }
 
     public void outputAttendanceTable() {
-        attendanceRecord = (HashMap) at.getAttendanceTable();
+        attendanceRecord = at.getAttendanceTable();
         for (String s : attendanceRecord.keySet()) {
             System.out.println("StudentID: " + s + ",Status: " + attendanceRecord.get(s));
         }

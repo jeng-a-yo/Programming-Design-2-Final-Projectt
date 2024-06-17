@@ -48,7 +48,7 @@ public class SendEmail {
             System.out.println("send failed, exception: " + mex);
         }
     }
-    void sendNotificationEmail(List<String> recipientEmailList){ //TODO: probably change type?
+    public void sendNotificationEmail(List<String> recipientEmailList){ //TODO: probably change type?
         ExecutorService executor = Executors.newCachedThreadPool();
         String body = "Please reply to this email with the attendance code.\n" +
             "Please respond within 3 minutes. The correct code is case-sensitive.";
@@ -62,7 +62,7 @@ public class SendEmail {
             e.printStackTrace();
         }
     }
-    void sendReplyEmail(String recipientEmail, int status){
+    public void sendReplyEmail(String recipientEmail, int status){
         String body = null;
         switch (status) {
             case -1:
@@ -87,7 +87,7 @@ public class SendEmail {
         }
         compose(recipientEmail, body);
     }
-    void sendTimeoutEmail(String recipientEmail){
+    public void sendTimeoutEmail(String recipientEmail){
         //timeout, absent
         String body = "You did not reply to the attendance code on time. You are marked as absent.";
         compose(recipientEmail, body);
