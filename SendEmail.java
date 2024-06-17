@@ -1,4 +1,4 @@
-package Programming_Design_2_Final_Project;
+// TODO: determine whether there is the need to declare `package Programming_Design_2_Final_Project;`
 
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
@@ -7,9 +7,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.mail.*;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 public class SendEmail {
     private HashMap<String, String> attendanceRecord = new HashMap<>(); //TODO unused?
     private String sender = "albert920507@gmail.com";
@@ -44,7 +49,7 @@ public class SendEmail {
             System.out.println("send failed, exception: " + mex);
         }
     }
-    void sendNotification(List<String> recipientList){ //TODO: probably change type?
+    void sendNotificationEmail(List<String> recipientList){ //TODO: probably change type?
         ExecutorService executor = Executors.newCachedThreadPool();
         String body = "Please reply to this email with the attendance code.\n" +
             "Please respond within 3 minutes. The correct code is case-sensitive.";
@@ -58,7 +63,7 @@ public class SendEmail {
             e.printStackTrace();
         }
     }
-    void sendReply(String recipient, int status){
+    void sendReply(String recipient, int status){ //TODO: should probably rename to sendReplyEmail to be consistent
         String body = null;
         switch (status) {
             case -1:
@@ -83,7 +88,7 @@ public class SendEmail {
         }
         compose(recipient, body);
     }
-    void sendTimeout(String recipient){
+    void sendTimeoutEmail(String recipient){
         //timeout, absent
         String body = "You did not reply to the attendance code on time. You are marked as absent.";
         compose(recipient, body);
