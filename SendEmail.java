@@ -63,7 +63,7 @@ public class SendEmail {
             e.printStackTrace();
         }
     }
-    void sendReply(String recipient, int status){ //TODO: should probably rename to sendReplyEmail to be consistent
+    void sendReplyEmail(String recipient, int status){
         String body = null;
         switch (status) {
             case -1:

@@ -148,13 +148,13 @@ public class ReceiveEmail {
                 // attendanceRecord.put(studentID, 1);
                 at.addUser(studentID, 1);
                 tokens.remove(passwordStd.trim());
-                se.sendReply(studentID, 1);
+                se.sendReplyEmail(studentID, 1);
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
                 // attendanceRecord.remove(studentID);
                 // attendanceRecord.put(studentID, -1);
                 at.addUser(studentID, -1);
-                se.sendReply(studentID, -1);
+                se.sendReplyEmail(studentID, -1);
             }
         }
 
@@ -179,13 +179,13 @@ public class ReceiveEmail {
                 // attendanceRecord.put(studentID, 2);
                 at.addUser(studentID, 2);
                 tokens.remove(passwordStd.trim());
-                se.sendReply(studentID, 2);
+                se.sendReplyEmail(studentID, 2);
             } else {
                 System.out.println("PASSWORD DIDN'T MATCH");
                 // attendanceRecord.remove(studentID);
                 // attendanceRecord.put(studentID, -1);
                 at.addUser(studentID, -1);
-                se.sendReply(studentID, -1);
+                se.sendReplyEmail(studentID, -1);
             }
         }
 
@@ -196,7 +196,7 @@ public class ReceiveEmail {
         for (String users : userEmailList) {
             if (!recordedUsers.contains(users)) {
                 at.addUser(users, 0);
-                se.sendReply(users, 0);
+                se.sendReplyEmail(users, 0);
             }
         }
     }
