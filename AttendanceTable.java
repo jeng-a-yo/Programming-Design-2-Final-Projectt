@@ -5,8 +5,8 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 public class AttendanceTable implements Serializable {
-    private Map<String, Integer> attendanceMap = new HashMap<>();
-    private Map<String, String> signInTimeMap = new HashMap<>();
+    private HashMap<String, Integer> attendanceMap = new HashMap<>();
+    private HashMap<String, String> signInTimeMap = new HashMap<>();
 
     public void addUser(String userID, int status) {
         attendanceMap.put(userID, status);
