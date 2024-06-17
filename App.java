@@ -1,11 +1,20 @@
 import java.security.SecureRandom;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
-public class App{
+import Programming_Design_2_Final_Project.*;
+
+public class App {
     public static void main(String[] args) {
 
         ArrayList<String> userEmailList = new ArrayList<String>();
+        userEmailList.add("c14121048@gs.ncku.edu.tw");
+        userEmailList.add("c14126111@gs.ncku.edu.tw");
+        userEmailList.add("e14106278@gs.ncku.edu.tw");
+        userEmailList.add("f74126351@gs.ncku.edu.tw");
 
         HashMap<String, Integer> userHashMap = new HashMap<String, Integer>();
         for (String userEmail : userEmailList) {
@@ -23,18 +32,21 @@ public class App{
 
             SendEmail sendEmail = new SendEmail();
 
-            
             sendEmail.sendNotificationEmail(userEmailList);
-            
+
             TokenGenerator tg = new TokenGenerator();
             ArrayList<String> generateTokens = tg.generateTokens(4);
             ReceiveEmail re = new ReceiveEmail(generateTokens, userEmailList);
 
-            re.firstCall();
             try {
+                Thread.sleep(60 * 1000);
+                re.firstCall();
+                re.outputAttendanceTable();
+
                 Thread.sleep(180 * 1000);
                 re.secondCall();
                 re.addZeros();
+                re.outputAttendanceTable();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -49,22 +61,18 @@ public class App{
                 e.printStackTrace();
             }
             re.serializeAttendanceTable(directory);
-            
-            
 
+        } else if (mode.equals("1")) {
 
-
-        }else if (mode.equals("1")) {
-    
             Query query = new Query();
-    
+
             System.out.println("Enter Query Mode");
             System.out.println("================================================");
 
             String queryData = scanner.nextLine();
-    
+
             switch (query.parserMode(queryData)) {
-                
+
                 case 0:
 
                     String[] queryterms = queryData.split("\\s+");
@@ -80,7 +88,7 @@ public class App{
                     break;
 
                 case 2:
-                
+
                     System.out.println(query.getAtendanceByDate(queryData));
                     break;
 
@@ -89,14 +97,13 @@ public class App{
                     System.out.println("Unknown input, please enter a valid format");
                     break;
 
-                }
-                
-        }else {
+            }
+
+        } else {
             System.out.println("Invalid Mode");
         }
     }
 }
-
 
 class TokenGenerator {
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -106,6 +113,7 @@ class TokenGenerator {
         ArrayList<String> tokens = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             String token = generateRandomAlphanumericToken(6);
+            System.out.println(token);
             tokens.add(token);
         }
         return tokens;
